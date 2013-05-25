@@ -2,5 +2,8 @@
   "papertrail": {
     "host": "logs.papertrailapp.com",
     "port": "26878"
+  },
+  "exceptional": {
+    "api_key": "b48126dadc65029fa97953392aa7747ec5dbd7b9"
   }
 }

@@ -3,7 +3,10 @@ exports.attach = function (options) {
     var app = this,
         flatiron = require('flatiron'),
         winston = require('winston'),
-        Papertrail = require('winston-papertrail').Papertrail;
+        Papertrail = require('winston-papertrail').Papertrail,
+        Exceptional = require('exceptional-node').Exceptional;
+
+    Exceptional.API_KEY = app.config.get("exceptional:api_key");
 
     app.use(flatiron.plugins.log);
 
@@ -48,4 +51,7 @@ exports.attach = function (options) {
         logger && logger.info(message);
     });
 
+    process.addListener( 'uncaughtException', function(err) {
+        Exceptional.handle(err);
+    });
 };
