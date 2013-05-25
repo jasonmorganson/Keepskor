@@ -6,11 +6,11 @@ exports.attach = function() {
     app.config
         .env()
         .argv()
-        .file({ file: 'config/config.json' })
-        .file({ file: 'config/' + env + '.json' })
+        .file( 'config/config.json' )
+        .file( 'env', 'config/' + env + '.json' )
         .defaults({
             'http': {
                 'port': 80
             }
-        })
-}
+        });
+};
