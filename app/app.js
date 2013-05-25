@@ -2,5 +2,5 @@
 var flatiron = require('flatiron'),
     app = flatiron.app;
 
-require('./config')(app);
+app.use(require('./config'));
 

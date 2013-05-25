@@ -1,6 +1,7 @@
-module.exports = function Config(app) {
+exports.attach = function() {
 
-    var env = process.env.NODE_ENV || 'development';
+    var app = this,
+        env = process.env.NODE_ENV || 'development';
 
     app.config
         .env()
