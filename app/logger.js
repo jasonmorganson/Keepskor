@@ -2,7 +2,14 @@ exports.attach = function (options) {
 
     var app = this,
         flatiron = require('flatiron'),
-        winston = require('winston'),
+        package = require('../package.json');
+
+    require('nodefly').profile(
+        app.config.get("nodefly:key"),
+        package.name
+    );
+
+    var winston = require('winston'),
         Papertrail = require('winston-papertrail').Papertrail,
         Exceptional = require('exceptional-node').Exceptional;
 
