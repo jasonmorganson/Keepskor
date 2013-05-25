@@ -1,2 +1,6 @@
 {
+  "papertrail": {
+    "host": "logs.papertrailapp.com",
+    "port": "26878"
+  }
 }

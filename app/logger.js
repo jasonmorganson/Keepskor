@@ -2,7 +2,8 @@ exports.attach = function (options) {
 
     var app = this,
         flatiron = require('flatiron'),
-        winston = require('winston');
+        winston = require('winston'),
+        Papertrail = require('winston-papertrail').Papertrail;
 
     app.use(flatiron.plugins.log);
 
@@ -34,4 +35,17 @@ exports.attach = function (options) {
         name: 'file.exceptions',
         filename: 'log/exceptions.log'
     });
-}
+
+    logger.add( winston.transports.Papertrail,
+        app.config.get('papertrail')
+    );
+
+    logger.transports.Papertrail.on( 'error', function(err) {
+        logger && logger.error(err);
+    });
+
+    logger.transports.Papertrail.on( 'connect', function(message) {
+        logger && logger.info(message);
+    });
+
+};
