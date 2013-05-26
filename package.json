@@ -14,6 +14,7 @@
     "chai": "1.6.0",
     "union": "0.3.5",
     "flatiron": "0.3.5",
+    "winston": "0.7.x",
     "winston-papertrail": "0.1.x",
     "exceptional-node": "0.1.x",
     "nodefly": "stable"
