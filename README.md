@@ -6,4 +6,5 @@ App hosting: [Nodejitsu](http://keepskor.jit.su)
 Log management: [Papertrail](http://papertrailapp.com)  
 Error management: [Exceptional.io](http://www.exceptional.io)  
 Performance monitoring: [NodeFly](http://nodefly.com)  
+Code coverage: [Coveralls.io](https://coveralls.io/jasonmorganson/keepskor)  
 
