@@ -2,6 +2,8 @@
 var flatiron = require('flatiron'),
     app = flatiron.app;
 
+module.exports = app;
+
 app.flatiron = flatiron;
 app.winston = require('winston');
 app.Papertrail = require('winston-papertrail').Papertrail,
