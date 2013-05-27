@@ -10,5 +10,7 @@ exports.attach = function() {
         }
     });
 
+    app.http.before.push( app.connect.cookieParser('secret') );
+    app.http.before.push( app.connect.session() );
     app.http.before.push( app.connect.static('public') );
 };
