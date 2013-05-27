@@ -10,4 +10,5 @@ exports.attach = function() {
         }
     });
 
+    app.http.before.push( app.connect.static('public') );
 };

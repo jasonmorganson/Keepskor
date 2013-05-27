@@ -5,6 +5,7 @@ var flatiron = require('flatiron'),
 module.exports = app;
 
 app.flatiron = flatiron;
+app.connect = require('connect');
 app.winston = require('winston');
 app.Papertrail = require('winston-papertrail').Papertrail,
 app.Exceptional = require('exceptional-node').Exceptional;
