@@ -1,4 +1,4 @@
-exports.attach = function (options) {
+exports.attach = function() {
 
 var package = require('../package.json');
 
