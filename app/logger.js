@@ -47,12 +47,12 @@ var package = require('../package.json');
         app.config.get('papertrail')
     );
 
-    logger.transports.Papertrail.on( 'error', function(err) {
-        logger && logger.error(err);
+    logger.transports.Papertrail.on( 'error', function(error) {
+        if(logger) { logger.error(error); }
     });
 
     logger.transports.Papertrail.on( 'connect', function(message) {
-        logger && logger.info(message);
+        if(logger) { logger.info(message); }
     });
 
     process.addListener( 'uncaughtException', function(err) {
