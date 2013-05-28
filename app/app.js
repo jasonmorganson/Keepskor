@@ -13,9 +13,11 @@ app.Papertrail = require('winston-papertrail').Papertrail;
 app.Exceptional = require('exceptional-node').Exceptional;
 app.nodefly = require('nodefly');
 
-var User = require('./models/user');
+app.socket = io.connect( 'http://pong.keepskor.com:9090' );
 
-var user = User.new({
+var Player = require('./models/player');
+
+var user = Player.new({
     "username": "test_user",
     "password": "secret",
     "email": "some@email.com"

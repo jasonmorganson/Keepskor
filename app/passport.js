@@ -1,4 +1,4 @@
-var User = require('./models/user');
+var Player = require('./models/player');
 var LocalStrategy = require('passport-local').Strategy;
 
 exports.attach = function() {
@@ -10,14 +10,14 @@ exports.attach = function() {
     });
 
     app.passport.deserializeUser(function(username, done) {
-        User.findByUsername( username, function(error, user) {
+        Player.findByUsername( username, function(error, user) {
             done(error, user);
         });
     });
 
     app.passport.use(new LocalStrategy( function(username, password, done) {
 
-        User.findByUsername( username, function(error, user) {
+        Player.findByUsername( username, function(error, user) {
 
             if (error) {
                 return done(error);
