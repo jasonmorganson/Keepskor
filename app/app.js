@@ -12,6 +12,8 @@ app.Papertrail = require('winston-papertrail').Papertrail;
 app.Exceptional = require('exceptional-node').Exceptional;
 app.nodefly = require('nodefly');
 
+var User = require('./models/user');
+
 app.use(require('./config'));
 app.use(require('./logger'));
 app.use(require('./server'));
