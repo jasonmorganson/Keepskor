@@ -1,11 +1,18 @@
 var resourceful = require('resourceful');
 resourceful.use('memory');
 
-var User = resourceful.define( 'user', function() {
+var User = resourceful.define( 'user' );
 
-    this.string('username');
-    this.string('password');
-    this.string('email');
+User.string( 'email', {
+    format: 'email'
+});
+
+User.string( 'username', {
+    required: true
+});
+
+User.string( 'password', {
+    format: 'password'
 });
 
 User.method( 'findByUsername', function( username, done ) {
