@@ -16,10 +16,11 @@
   },
   "dependencies": {
     "chai": "1.6.0",
+    "connect": "2.7.x",
     "union": "0.3.5",
     "flatiron": "0.3.5",
     "plates": "0.4.x",
-    "connect": "2.7.x",
+    "resourceful": "0.3.3",
     "winston": "0.7.x",
     "winston-papertrail": "0.1.x",
     "exceptional-node": "0.1.x",
