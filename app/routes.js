@@ -7,8 +7,46 @@ exports.attach = function() {
     var user = "test";
     var template = fs.readFileSync( "./public/index.html", 'utf-8' );
 
-    app.router.get( '/hey', function() {
-        this.res.writeHead( 200, { "Content-Type": "text/html" } );
-        this.res.end( app.plates.bind( template, { "user": user } ) );
+    app.router.get( '/', function() {
+
+        self = this;
+        req = self.req;
+        res = self.res;
+        username = req.user ? req.user.username : "Unknown";
+
+        app.log.info("req.user" + req.user);
+
+        res.writeHead( 200, { 'Content-Type': 'text/html' } );
+
+        res.end( app.plates.bind( template, { "user": username } ) );
+    });
+
+    app.router.post( '/login', function() {
+
+        self = this;
+        req = self.req;
+        res = self.res;
+
+        function next() { res.emit('next'); }
+
+        app.passport.authenticate( 'local', function(error, user) {
+
+            if (error) { res.end("SERVER ERROR\n") }
+            if (!user) { res.end("false") }
+            else {
+
+                req.logIn( user, function(error) {
+
+                    if (error) { throw error }
+
+                    res.writeHead( 200, {
+                        'Content-Type': 'text/html',
+                        'Authentication': JSON.stringify(req._passport.session)});
+
+                    res.end("true");
+                });
+
+            }
+        })(this.req, this.res, next);
     });
 };

@@ -8,6 +8,7 @@ app.flatiron = flatiron;
 app.connect = require('connect');
 app.winston = require('winston');
 app.plates = require('plates');
+app.passport = require('passport');
 app.Papertrail = require('winston-papertrail').Papertrail;
 app.Exceptional = require('exceptional-node').Exceptional;
 app.nodefly = require('nodefly');
@@ -18,6 +19,7 @@ app.use(require('./config'));
 app.use(require('./logger'));
 app.use(require('./server'));
 app.use(require('./routes'));
+app.use(require('./passport'));
 
 app.start( app.config.get("http:port"), function(error) {
 
