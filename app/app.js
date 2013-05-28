@@ -1,5 +1,6 @@
 
 var flatiron = require('flatiron'),
+    io = require('socket.io-client'),
     app = flatiron.app;
 
 module.exports = app;
@@ -40,4 +41,14 @@ app.start( app.config.get("http:port"), function(error) {
 
     var addr = app.server.address();
     app.log.info( "Listening on http://" + addr.address + ':' + addr.port );
+});
+
+app.socket.on( 'news', function(data) {
+    app.log.info("News from Keepskor:");
+    app.log.info(data);
+});
+
+app.socket.on( 'server_response', function(data) {
+    app.log.info("Server response from Keepskor:");
+    app.log.info(data);
 });
