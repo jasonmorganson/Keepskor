@@ -1,4 +1,4 @@
-var Player = require('./models/player');
+var Player = require('./resources/player');
 var LocalStrategy = require('passport-local').Strategy;
 
 exports.attach = function() {

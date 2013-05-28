@@ -16,7 +16,7 @@ app.nodefly = require('nodefly');
 
 app.socket = io.connect( 'http://pong.keepskor.com:9090' );
 
-var Player = require('./models/player');
+var Player = require('./resources/player');
 
 var user = Player.new({
     "username": "test_user",
