@@ -56,6 +56,10 @@ var package = require('../package.json');
     });
 
     process.addListener( 'uncaughtException', function(err) {
+        app.log.error(err);
+    });
+
+    process.addListener( 'uncaughtException', function(err) {
         app.Exceptional.handle(err);
     });
 };
