@@ -15,6 +15,14 @@ app.nodefly = require('nodefly');
 
 var User = require('./models/user');
 
+var user = User.new({
+    "username": "test_user",
+    "password": "secret",
+    "email": "some@email.com"
+});
+
+user.save();
+
 app.use(require('./config'));
 app.use(require('./logger'));
 app.use(require('./server'));
