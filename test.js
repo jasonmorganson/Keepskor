@@ -30,49 +30,6 @@ socket.on('connect', function() {
         console.log(data);
     });
 
-    socket.on('anything', function(data) {
-        console.log(data);
-    });
-
-    socket.on('kschat', function(data) {
-        console.log("kschat: " + data);
-    });
-
-    socket.on('room_chat', function(data) {
-        console.log(data);
-    });
-
-    socket.on('player_events', function(data) {
-        console.log(data);
-    });
-
-    socket.on('room_events', function(data) {
-        console.log(data);
-    });
-
-    socket.on('send', function(data) {
-        console.log(data);
-    });
-
-    socket.on('news', function(data) {
-        console.log(data);
-        socket.emit('my other event', {my: 'data'});
-    });
-
-    socket.on('event', function(data) {
-        console.log(data);
-    });
-
-    socket.emit('room_events', {eventName:'move'}, function(data) {
-        console.log(data);
-    });
-
-    socket.emit('send', {
-        'a':playerKey,
-        'b':'!smove newroom',
-        'r': 'room'
-    });
-
     var verb = {
         'a': playerKey,
         'b': 'register test pass',
