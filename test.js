@@ -63,16 +63,6 @@ socket.on('connect', function() {
         console.log(data);
     });
 
-    var payload = '{"p":"'+playerKey+'","u": "test","m": "test"}';
-    console.log(payload);
-    payload = JSON.parse(payload);
-    console.log(payload);
-    socket.emit('room_chat', payload );
-
-    socket.emit('message', {
-
-    });
-
     socket.emit('room_events', {eventName:'move'}, function(data) {
         console.log(data);
     });
@@ -89,8 +79,9 @@ socket.on('connect', function() {
         'r': 'lobby'
     }
 
-    socket.emit('player_events', {
-    }, function(data) {
+    console.log(verb);
+
+    socket.emit('server_response', verb, function(data) {
         console.log(data);
     });
 });
