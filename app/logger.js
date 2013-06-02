@@ -38,6 +38,7 @@ var package = require('../package.json');
     });
 
     logger.add( app.winston.transports.File, {
+        level: 'error',
         handleExceptions: true,
         name: 'file.exceptions',
         filename: 'log/exceptions.log'
