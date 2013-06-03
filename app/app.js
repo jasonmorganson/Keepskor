@@ -7,7 +7,6 @@ module.exports = app;
 
 app.flatiron = flatiron;
 app.connect = require('connect');
-app.winston = require('winston');
 app.plates = require('plates');
 app.passport = require('passport');
 
