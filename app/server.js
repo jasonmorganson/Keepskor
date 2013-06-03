@@ -6,12 +6,16 @@ exports.attach = function() {
 
     var app = this;
 
-    app.use(flatiron.plugins.http, {
+    var handleError = function(err, req, res) {
+        app.log.error(err);
+        var status = err.status || '404';
+        var body = err.body.error || app.render('404') || 'Not Found';
+        res.writeHead(status, { 'Content-Type': 'text/html' });
+        res.end(body);
+    };
 
-        onError: function(error) {
-            this.res.writeHead(404);
-            this.res.end();
-        }
+    app.use(flatiron.plugins.http, {
+        onError: handleError
     });
 
 
