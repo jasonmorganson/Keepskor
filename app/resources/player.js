@@ -1,94 +1,60 @@
-var resourceful = require('resourceful');
-resourceful.use('memory');
+var util = require('util'),
+    httpUsers = require('flatiron-http-users'),
+    io = require('socket.io-client'),
+    socket = io.connect( 'http://pong.keepskor:9090' );
 
-var Player = resourceful.define( 'player' );
+exports.resource = function(app) {
 
-Player.string( 'email', {
-    format: 'email'
-});
+    var Player =
+    app.resources.Player =
+    app.define('Player', function() {
 
-Player.string( 'phone' );
+        var self = this;
 
-Player.string( 'username', {
-    required: true
-});
+        var User = app.resources.User;
+        this.parent('User');
 
-Player.string( 'password', {
-    format: 'password'
-});
+        this.string( 'phone' );
 
-Player.string( 'token', {
-    description: "",
-    message: "",
-    default: ""
-});
+        this.string( 'playerKey', {
+            description: "Unique key identifying the player",
+            message: "",
+            default: "51a5319005652a676900027a"
+        });
 
-Player.string( 'key', {
-    description: "",
-    message: "",
-    default: ""
-});
+        this.string( 'twitterKey', {
+            description: "Twitter authorization key",
+            message: "Combined authToken and authKey, separated by a colon. Provided by Twitter."
+        });
 
-Player.string( 'playerKey', {
-    description: "Unique key identifying the player",
-    message: "",
-    default: ""
-});
-
-Player.string( 'twitterKey', {
-    description: "Twitter authorization key",
-    message: "Combined authToken and authKey, separated by a colon. Provided by Twitter."
-});
-
-Player.string( 'facebookKey', {
-    description: "Facebook authorization key",
-    message: "Authorization key generated from OAuth handshake with Facebook"
-});
+        this.string( 'facebookKey', {
+            description: "Facebook authorization key",
+            message: "Authorization key generated from OAuth handshake with Facebook"
+        });
 
 
+        this.method( 'findByUsername', function( username, done ) {
 
+            this.find( { "username": username }, function(error, user) {
 
-Player.method( 'usernameExists', function( username, done ) {
+                if (error) {
+                    return done(error, null);
+                }
+                else if (user) {
+                    return done(null, user[0]);
+                }
+                else {
+                    return done(null, null);
+                }
+            })},
 
-    app.socket.emit( 'server_response', {
-        'a': this.key,
-        'b': '!usernamecheck',
-        'r': 'lobby',
-        's': this.token
-    })},
+            { "properties": {
 
-    { "properties": {
-
-        "username": {
-            "type": "string",
-            "required": true
-        }
-    }}
-);
-
-Player.method( 'findByUsername', function( username, done ) {
-
-    Player.find( { "username": username }, function(error, user) {
-
-        if (error) {
-            return done(error, null);
-        }
-        else if (user) {
-            return done(null, user[0]);
-        }
-        else {
-            return done(null, null);
-        }
-    })},
-
-    { "properties": {
-
-        "username": {
-            "type": "string",
-            "required": true
-        }
-    }}
-);
-
-module.exports = Player;
-
+                "username": {
+                    "type": "string",
+                    "required": true
+                }
+            }}
+        );
+    });
+};

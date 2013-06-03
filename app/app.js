@@ -1,4 +1,5 @@
 var flatiron = require('flatiron'),
+    resourceful = require('resourceful'),
     app = flatiron.app;
 
 module.exports = app;
@@ -8,6 +9,12 @@ app.use(require('./logger'));
 app.use(require('./server'));
 app.use(require('./routes'));
 app.use(require('./passport'));
+
+app.use(flatiron.plugins.resourceful, {
+    dir: './app/resources'
+});
+
+resourceful.use('couchdb', app.config.get('resourceful'));
 
 app.start( app.config.get("http:port"), function(error) {
 

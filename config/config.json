@@ -1,4 +1,8 @@
 {
+  "resourceful": {
+    "engine": "couchdb",
+    "database": "dev"
+  },
   "papertrail": {
     "host": "logs.papertrailapp.com",
     "port": "26878"
