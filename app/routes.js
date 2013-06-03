@@ -9,6 +9,8 @@ exports.attach = function() {
     var user = "test";
     var template = fs.readFileSync( "./app/templates/index.html", 'utf-8' );
 
+    app.use(require('./server'));
+
     app.router.get( '/', function() {
 
         self = this;
