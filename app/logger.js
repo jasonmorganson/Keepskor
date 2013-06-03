@@ -1,9 +1,17 @@
+var package = require('../package.json'),
+    Papertrail = require('winston-papertrail').Papertrail,
+    Exceptional = require('exceptional-node').Exceptional,
+    nodefly = require('nodefly');
+
 exports.attach = function() {
 
-var package = require('../package.json');
 
 
     var app = this;
+
+    app.papertrail = Papertrail;
+    app.exceptional = Exceptional;
+    app.nodefly = nodefly;
 
     app.Exceptional.API_KEY = app.config.get("exceptional:api_key");
 

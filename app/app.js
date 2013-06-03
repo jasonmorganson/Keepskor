@@ -10,9 +10,6 @@ app.connect = require('connect');
 app.winston = require('winston');
 app.plates = require('plates');
 app.passport = require('passport');
-app.Papertrail = require('winston-papertrail').Papertrail;
-app.Exceptional = require('exceptional-node').Exceptional;
-app.nodefly = require('nodefly');
 
 app.socket = io.connect( 'http://pong.keepskor.com:9090' );
 
