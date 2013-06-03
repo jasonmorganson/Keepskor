@@ -1,22 +1,7 @@
-
 var flatiron = require('flatiron'),
-    io = require('socket.io-client'),
     app = flatiron.app;
 
 module.exports = app;
-
-
-app.socket = io.connect( 'http://pong.keepskor.com:9090' );
-
-var Player = require('./resources/player');
-
-var user = Player.new({
-    "username": "test_user",
-    "password": "secret",
-    "email": "some@email.com"
-});
-
-user.save();
 
 app.use(require('./config'));
 app.use(require('./logger'));
@@ -35,12 +20,3 @@ app.start( app.config.get("http:port"), function(error) {
     app.log.info( "Listening on http://" + addr.address + ':' + addr.port );
 });
 
-app.socket.on( 'news', function(data) {
-    app.log.info("News from Keepskor:");
-    app.log.info(data);
-});
-
-app.socket.on( 'server_response', function(data) {
-    app.log.info("Server response from Keepskor:");
-    app.log.info(data);
-});
