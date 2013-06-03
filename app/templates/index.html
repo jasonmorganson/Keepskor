@@ -4,14 +4,24 @@
         <h2 id="user">User</h2>
         <form action="/login" method="post">
             <div>
+                <label>Email:</label>
+                <input id="email" name="email" type="email"/><br/>
+            </div>
+            <div>
+                <label>Number:</label>
+                <input id="number" name="number" type="tel"/><br/>
+            </div>
+            <div>
                 <label>Username:</label>
-                <input type="text" name="username"/><br/>
+                <input id="username" name="username" type="text"/><br/>
             </div>
             <div>
                 <label>Password:</label>
-                <input type="password" name="password"/>
+                <input id="password" name="password" type="password"/>
             </div>
             <div>
+                <a id="register" href="#">Register</a>
+                <a id="forgot" href="#">Forgot password?</a>
                 <input type="submit" value="Log In"/>
             </div>
         </form>
