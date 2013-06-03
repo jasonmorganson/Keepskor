@@ -1,4 +1,8 @@
 {
+  "user": {
+    "require-activation": false,
+    "require-confirmation": false
+  },
   "resourceful": {
     "engine": "couchdb",
     "database": "dev"
