@@ -1,4 +1,6 @@
-var fs = require('fs');
+var fs = require('fs'),
+    plates = require('plates'),
+    director = require('director');
 
 exports.attach = function() {
 
@@ -18,7 +20,7 @@ exports.attach = function() {
 
         res.writeHead( 200, { 'Content-Type': 'text/html' } );
 
-        res.end( app.plates.bind( template, { "user": username } ) );
+        res.end( plates.bind( template, { "user": username } ) );
     });
 
     app.router.post( '/login', function() {

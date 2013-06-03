@@ -6,7 +6,6 @@ var flatiron = require('flatiron'),
 module.exports = app;
 
 app.flatiron = flatiron;
-app.plates = require('plates');
 
 app.socket = io.connect( 'http://pong.keepskor.com:9090' );
 
