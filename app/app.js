@@ -1,4 +1,5 @@
 var flatiron = require('flatiron'),
+    httpUsers = require('flatiron-http-users'),
     resourceful = require('resourceful'),
     app = flatiron.app;
 
@@ -15,6 +16,9 @@ app.use(flatiron.plugins.resourceful, {
 });
 
 resourceful.use('couchdb', app.config.get('resourceful'));
+
+
+app.use(httpUsers, {});
 
 app.start( app.config.get("http:port"), function(error) {
 

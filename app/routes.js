@@ -11,6 +11,13 @@ exports.attach = function() {
 
     app.use(require('./server'));
 
+    app.router.before(app.requireAuth);
+
+    app.unauthorized = new director.http.Router().configure({
+        async: true,
+        strict: false
+    });
+
     app.router.get( '/', function() {
 
         self = this;

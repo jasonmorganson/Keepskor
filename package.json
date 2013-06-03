@@ -23,6 +23,7 @@
     "union": "0.3.5",
     "director": "1.1",
     "flatiron": "0.3.5",
+    "flatiron-http-users": "latest",
     "plates": "0.4.x",
     "resourceful": "0.3.3",
     "passport": "git://github.com/jaredhanson/passport.git#flatiron",

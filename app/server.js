@@ -18,7 +18,13 @@ exports.attach = function() {
         onError: handleError
     });
 
+    var checkAuthorization = function(req, res) {
+        if (!app.unauthorized.dispatch(req, res)) {
+            res.emit('next');
+        }
+    };
 
+    app.http.before.push(checkAuthorization);
     app.http.before.push(connect.cookieParser('secret'));
     app.http.before.push(connect.session());
     app.http.before.push(passport.initialize());
