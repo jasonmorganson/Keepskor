@@ -1,9 +1,11 @@
+var flatiron = require('flatiron');
+
 exports.attach = function() {
 
     var app = this,
         env = process.env.NODE_ENV || 'development';
 
-    app.use(app.flatiron.plugins.config);
+    app.use(flatiron.plugins.config);
 
     app.config
         .env()

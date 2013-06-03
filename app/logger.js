@@ -8,8 +8,6 @@ var errs = require('errs'),
 
 exports.attach = function() {
 
-
-
     var app = this;
 
     app.papertrail = Papertrail;
@@ -68,7 +66,7 @@ exports.attach = function() {
     });
 
     process.addListener('uncaughtException', function(err) {
-        app.Exceptional.handle(err);
+        Exceptional.handle(err);
     });
 
     process.addListener('uncaughtException', function(err) {

@@ -1,23 +1,23 @@
-var Player = require('./resources/player');
-var LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
 
 exports.attach = function() {
 
     var app = this;
 
-    app.passport.serializeUser(function(user, done) {
+    passport.serializeUser(function(user, done) {
         done(null, user.username);
     });
 
-    app.passport.deserializeUser(function(username, done) {
-        Player.findByUsername( username, function(error, user) {
+    passport.deserializeUser(function(username, done) {
+        app.resources.Player.findByUsername( username, function(error, user) {
             done(error, user);
         });
     });
 
-    app.passport.use(new LocalStrategy( function(username, password, done) {
+    passport.use(new LocalStrategy( function(username, password, done) {
 
-        Player.findByUsername( username, function(error, user) {
+        app.resources.Player.findByUsername( username, function(error, user) {
 
             if (error) {
                 return done(error);
