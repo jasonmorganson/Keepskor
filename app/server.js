@@ -1,8 +1,12 @@
+var flatiron = require('flatiron'),
+    connect = require('connect'),
+    passport = require('passport');
+
 exports.attach = function() {
 
     var app = this;
 
-    app.use(app.flatiron.plugins.http, {
+    app.use(flatiron.plugins.http, {
 
         onError: function(error) {
             this.res.writeHead(404);
@@ -10,9 +14,11 @@ exports.attach = function() {
         }
     });
 
-    app.http.before.push( app.connect.cookieParser('secret') );
-    app.http.before.push( app.connect.session() );
-    app.http.before.push( app.passport.initialize() );
-    app.http.before.push( app.passport.session() );
-    app.http.before.push( app.connect.static('public') );
+
+    app.http.before.push(connect.cookieParser('secret'));
+    app.http.before.push(connect.session());
+    app.http.before.push(passport.initialize());
+    app.http.before.push(passport.session());
+    app.http.before.push(connect.static('public'));
+
 };
