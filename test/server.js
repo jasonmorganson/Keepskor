@@ -14,6 +14,12 @@ describe('server', function(){
         });
     });
     describe('should be', function() {
+        it('using the config plugin', function() {
+            expect(app.config).to.exist;
+        });
+        it('using the log plugin', function() {
+            expect(app.log).to.exist;
+        });
         it('using the http plugin', function() {
             expect(app.http).to.exist;
         });
