@@ -16,31 +16,29 @@ exports.attach = function() {
     });
 
     app.router.notfound = function(callback) {
+        app.log.warn("Not Found: " + this.req.url);
         this.res.writeHead(404, { 'Content-Type': 'text/html' });
         this.res.end("Not Found");
-        app.log.warn("Not Found: " + this.req.url);
         callback(OK, this.req, this.res);
     };
 
-    app.http.onError  = function(err, req, res) {
+    app.http.onError  = function(err) {
         if(err) {
             app.log.error(err);
-            var status = err.status || '500';
-            var body = err.body.error || 'Error';
-            res.writeHead(status, { 'Content-Type': 'text/html' });
-            res.end(body);
+            var status = err.status || 500;
+            var body = err.body.error || "Error";
+            this.res.writeHead(status, { 'Content-Type': 'text/html' });
+            this.res.end(body);
         }
     };
 
     app.router.get( '/', function() {
 
         var username = this.req.user ? this.req.user.username : "Unknown";
-        var template = fs.readFileSync( "./app/templates/index.html", 'utf-8' );
+        var template = fs.readFileSync( './app/templates/index.html', 'utf-8' );
 
-        this.res.writeHead( 200, { 'Content-Type': 'text/html' } );
-        this.res.end( plates.bind( template, { "username": username } ) );
-    });
-
+        this.res.writeHead(200, { 'Content-Type': 'text/html' } );
+        this.res.end( plates.bind( template, { user: username } ) );
     });
 
     app.router.post( '/login', function() {
