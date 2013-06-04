@@ -5,7 +5,9 @@
   },
   "resourceful": {
     "engine": "couchdb",
-    "database": "dev"
+    "database": "dev",
+    "host": "localhost",
+    "port": 5984
   },
   "papertrail": {
     "host": "logs.papertrailapp.com",
