@@ -8,13 +8,13 @@ exports.attach = function() {
 
     app.use(flatiron.plugins.http);
 
-    var checkAuthorization = function(req, res) {
+    var allowUnauthorizedRoutes = function(req, res) {
         if (!app.unauthorized.dispatch(req, res)) {
             res.emit('next');
         }
     };
 
-    app.http.before.push(checkAuthorization);
+    app.http.before.push(allowUnauthorizedRoutes);
     app.http.before.push(connect.cookieParser('secret'));
     app.http.before.push(connect.session());
     app.http.before.push(passport.initialize());
