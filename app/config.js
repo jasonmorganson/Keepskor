@@ -14,7 +14,7 @@ exports.attach = function() {
         .file( 'env', 'config/' + env + '.json' )
         .defaults({
             'http': {
-                'port': 80
+                'port': 8080
             }
         });
 };
