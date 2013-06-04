@@ -8,14 +8,16 @@ exports.attach = function() {
 
     app.use(require('./server'));
 
-    app.router.before(app.requireAuth);
+    app.http.router = app.router;
+
+    app.http.router.before(app.requireAuth);
 
     app.unauthorized = new director.http.Router().configure({
         async: true,
         strict: false
     });
 
-    app.router.notfound = function(callback) {
+    app.http.router.notfound = function(callback) {
         app.log.warn("Not Found: " + this.req.url);
         this.res.writeHead(404, { 'Content-Type': 'text/html' });
         this.res.end("Not Found");
@@ -32,7 +34,7 @@ exports.attach = function() {
         }
     };
 
-    app.router.get( '/', function() {
+    app.http.router.get( '/', function() {
 
         var username = this.req.user ? this.req.user.username : "Unknown";
         var template = fs.readFileSync( './app/templates/index.html', 'utf-8' );
@@ -41,7 +43,7 @@ exports.attach = function() {
         this.res.end( plates.bind( template, { user: username } ) );
     });
 
-    app.router.post( '/login', function() {
+    app.http.router.post( '/login', function() {
 
         self = this;
         req = self.req;
