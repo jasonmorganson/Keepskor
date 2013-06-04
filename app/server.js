@@ -6,17 +6,7 @@ exports.attach = function() {
 
     var app = this;
 
-    var handleError = function(err, req, res) {
-        app.log.error(err);
-        var status = err.status || '404';
-        var body = err.body.error || app.render('404') || 'Not Found';
-        res.writeHead(status, { 'Content-Type': 'text/html' });
-        res.end(body);
-    };
-
-    app.use(flatiron.plugins.http, {
-        onError: handleError
-    });
+    app.use(flatiron.plugins.http);
 
     var checkAuthorization = function(req, res) {
         if (!app.unauthorized.dispatch(req, res)) {

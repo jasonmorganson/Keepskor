@@ -18,6 +18,23 @@ exports.attach = function() {
         strict: false
     });
 
+    app.router.notfound = function(callback) {
+        this.res.writeHead(404, { 'Content-Type': 'text/html' });
+        this.res.end("Not Found");
+        app.log.warn("Not Found: " + this.req.url);
+        callback(OK, this.req, this.res);
+    };
+
+    app.http.onError  = function(err, req, res) {
+        if(err) {
+            app.log.error(err);
+            var status = err.status || '500';
+            var body = err.body.error || 'Error';
+            res.writeHead(status, { 'Content-Type': 'text/html' });
+            res.end(body);
+        }
+    };
+
     app.router.get( '/', function() {
 
         self = this;
