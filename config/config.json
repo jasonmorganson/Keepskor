@@ -4,6 +4,7 @@
     "require-confirmation": false
   },
   "resourceful": {
+    "dir": "./app/resources",
     "engine": "couchdb",
     "database": "dev",
     "host": "localhost",

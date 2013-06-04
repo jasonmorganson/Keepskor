@@ -11,11 +11,9 @@ app.use(require('./server'));
 app.use(require('./routes'));
 app.use(require('./passport'));
 
-app.use(flatiron.plugins.resourceful, {
-    dir: './app/resources'
-});
+app.use(flatiron.plugins.resourceful, app.config.get('resourceful'));
 
-resourceful.use('couchdb', app.config.get('resourceful'));
+
 
 
 app.use(httpUsers, {});
