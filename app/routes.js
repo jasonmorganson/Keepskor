@@ -6,9 +6,6 @@ exports.attach = function() {
 
     var app = this;
 
-    var user = "test";
-    var template = fs.readFileSync( "./app/templates/index.html", 'utf-8' );
-
     app.use(require('./server'));
 
     app.router.before(app.requireAuth);
@@ -37,16 +34,13 @@ exports.attach = function() {
 
     app.router.get( '/', function() {
 
-        self = this;
-        req = self.req;
-        res = self.res;
-        username = req.user ? req.user.username : "Unknown";
+        var username = this.req.user ? this.req.user.username : "Unknown";
+        var template = fs.readFileSync( "./app/templates/index.html", 'utf-8' );
 
-        app.log.info("req.user" + req.user);
+        this.res.writeHead( 200, { 'Content-Type': 'text/html' } );
+        this.res.end( plates.bind( template, { "username": username } ) );
+    });
 
-        res.writeHead( 200, { 'Content-Type': 'text/html' } );
-
-        res.end( plates.bind( template, { "user": username } ) );
     });
 
     app.router.post( '/login', function() {
