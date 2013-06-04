@@ -12,10 +12,11 @@ exports.attach = function() {
 
     app.http.router.before(app.requireAuth);
 
-    app.unauthorized = new director.http.Router().configure({
-        async: true,
-        strict: false
-    });
+    app.unauthorized = new director.http.Router()
+        .configure({
+            async: true,
+            strict: false
+        });
 
     app.http.router.notfound = function(callback) {
         app.log.warn("Not Found: " + this.req.url);
