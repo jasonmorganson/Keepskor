@@ -1,4 +1,5 @@
-var flatiron = require('flatiron'),
+var errs = require('errs'),
+    flatiron = require('flatiron'),
     httpUsers = require('flatiron-http-users'),
     resourceful = require('resourceful'),
     app = flatiron.app;
@@ -13,16 +14,19 @@ app.use(require('./passport'));
 
 app.use(flatiron.plugins.resourceful, app.config.get('resourceful'));
 
+// HTTP user resources and routes
+app.use(httpUsers);
 
 
+app.on('init', function(err) {
 
-app.use(httpUsers, {});
+    app.log.verbose("Initialized");
+});
 
-app.start( app.config.get("http:port"), function(error) {
+app.start(app.config.get("http:port"), function(err) {
 
-    if(error) {
-        app.log.error( error.message || "Could not start properly, exiting" );
-        return process.exit(1);
+    if(err) {
+        throw errs.merge(err, "Could not start properly, exiting");
     }
 
     var addr = app.server.address();
