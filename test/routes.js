@@ -7,7 +7,15 @@ var chai = require('chai'),
 var app = require('../app/app.js'),
     director = require('director');
 
+var host = 'http://localhost',
+    port = 8888,
+    server = host + ':' + port;
+
 describe('routes', function(){
+
+    before(function() {
+        app.start(port);
+    });
 
     describe('should include', function() {
         it('unauthorized', function() {
@@ -20,6 +28,10 @@ describe('routes', function(){
         it('error', function() {
             expect(app.http.onError).to.exist;
         });
+
+    after(function(done) {
+        app.server.close();
+        done();
     });
 })
 

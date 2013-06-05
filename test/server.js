@@ -6,7 +6,15 @@ var chai = require('chai'),
 
 var app = require('../app/app.js');
 
+var host = 'http://localhost',
+    port = 8888,
+    server = host + ':' + port;
+
 describe('server', function(){
+
+    before(function() {
+        app.start(port);
+    });
 
     describe('should have', function() {
         it('http router', function() {
@@ -32,6 +40,11 @@ describe('server', function(){
             expect(app.server.address().address).to.not.be.undefined;
             assert.isNumber(app.server.address().port);
         });
+    });
+
+    after(function(done) {
+        app.server.close();
+        done();
     });
 })
 
