@@ -4,7 +4,7 @@ var chai = require('chai'),
     expect = chai.expect,
     should = chai.should();
 
-var app = require('../app/app.js'),
+var app = require('../../app/app.js'),
     director = require('director');
 
 var host = 'http://localhost',
@@ -28,6 +28,14 @@ describe('routes', function(){
         it('error', function() {
             expect(app.http.onError).to.exist;
         });
+        it('register', function() {
+            app.unauthorized.routes.register.should.exist;
+        });
+        it('login', function() {
+            app.http.router.routes.login.should.exist;
+        });
+    });
+
 
     after(function(done) {
         app.server.close();
