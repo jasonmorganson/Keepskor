@@ -6,7 +6,7 @@ var errs = require('errs'),
     Exceptional = require('exceptional-node').Exceptional,
     nodefly = require('nodefly');
 
-require(../lib/common);
+require('../lib/common');
 
 exports.attach = function() {
 
@@ -60,7 +60,7 @@ exports.attach = function() {
     );
 
     logger.transports.Papertrail.on('error', function(err) {
-        app.log.error(err);
+        app.log.error(err.message);
     });
 
     logger.transports.Papertrail.on('connect', function(message) {
@@ -73,7 +73,7 @@ exports.attach = function() {
 
     process.addListener('uncaughtException', function(err) {
         console.trace();
-        app.log.error(err);
+        app.log.error(err.message);
         process.exit(ERROR);
     });
 };
