@@ -1,8 +1,10 @@
 
-var chai = require('chai'),
+var http = require('http'),
+    chai = require('chai'),
     assert = chai.assert,
     expect = chai.expect,
-    should = chai.should();
+    should = chai.should(),
+    request = require('request');
 
 var app = require('../../app/app.js');
 
@@ -16,14 +18,45 @@ describe('the login route', function(){
         app.start(port);
     });
 
-    describe('should respond with error', function() {
-        it('when username is missing');
-        it('when email is missing');
-        it('when password is missing');
+    describe('should respond with unauthorized (401)', function() {
+        it('when POST is empty', function(done) {
+            request.post(server + '/login', {
+                /* Empty POST */
+            }, function(err, res, body) {
+                assert.equal(res.statusCode, 401);
+                done();
+            });
+        });
+        it('when username is missing', function(done) {
+            request.post(server + '/login', {
+                password: "1234"
+            }, function(err, res, body) {
+                assert.equal(res.statusCode, 401);
+                done();
+            });
+        });
+        it('when password is missing', function(done) {
+            request.post(server + '/login', {
+                username: "test_user"
+            }, function(err, res, body) {
+                assert.equal(res.statusCode, 401);
+                done();
+            });
+        });
     });
 
     describe('should respond with success', function() {
-        it('on a valid request');
+        it.skip('on a valid request', function(done) {
+            /*
+             *request.post(server + '/login', {
+             *    username: "test_user",
+             *    password: "password"
+             *}, function(err, res, body) {
+             *    assert.equal(res.statusCode, 200);
+             *    done();
+             *});
+             */
+        });
     });
 
     after(function(done) {

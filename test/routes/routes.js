@@ -1,5 +1,6 @@
 
-var chai = require('chai'),
+var http = require('http'),
+    chai = require('chai'),
     assert = chai.assert,
     expect = chai.expect,
     should = chai.should();
@@ -36,6 +37,21 @@ describe('routes', function(){
         });
     });
 
+    describe('should respond', function() {
+        it('with 401 when not authorized', function(done) {
+            http.get(server + '/users/notme', function(res) {
+                assert.equal(401, res.statusCode);
+                done();
+            });
+        });
+        it('with 404 when not found', function(done) {
+            http.get(server + '/not_found', function(res) {
+                assert.equal(404, res.statusCode);
+                done();
+            });
+        });
+        //it.skip('with 500 on error');
+    });
 
     after(function(done) {
         app.server.close();
