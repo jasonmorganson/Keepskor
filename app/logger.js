@@ -58,11 +58,11 @@ exports.attach = function() {
     );
 
     logger.transports.Papertrail.on('error', function(err) {
-        if(logger) { logger.error(err); }
+        app.log.error(err);
     });
 
     logger.transports.Papertrail.on('connect', function(message) {
-        if(logger) { logger.info(message); }
+        app.log.verbose(message);
     });
 
     process.addListener('uncaughtException', function(err) {
