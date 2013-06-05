@@ -6,6 +6,8 @@ var errs = require('errs'),
     Exceptional = require('exceptional-node').Exceptional,
     nodefly = require('nodefly');
 
+require(../lib/common);
+
 exports.attach = function() {
 
     var app = this;
@@ -72,5 +74,6 @@ exports.attach = function() {
     process.addListener('uncaughtException', function(err) {
         console.trace();
         app.log.error(err);
+        process.exit(ERROR);
     });
 };
