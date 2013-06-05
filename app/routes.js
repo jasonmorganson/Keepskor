@@ -1,4 +1,5 @@
 var fs = require('fs'),
+    errs = require('errs'),
     plates = require('plates'),
     director = require('director');
 
@@ -20,18 +21,20 @@ exports.attach = function() {
 
     app.http.router.notfound = function(callback) {
         app.log.warn("Not Found: " + this.req.url);
-        this.res.writeHead(404, { 'Content-Type': 'text/html' });
+        var headers = req.headers || { 'Content-Type': 'text/html' };
+        this.res.writeHead(404, headers);
         this.res.end("Not Found");
         callback(OK, this.req, this.res);
     };
 
-    app.http.onError  = function(err) {
+    app.http.onError = function(err, req, res) {
         if(err) {
-            app.log.error(err);
             var status = err.status || 500;
-            var body = err.body.error || "Error";
-            this.res.writeHead(status, { 'Content-Type': 'text/html' });
-            this.res.end(body);
+            var headers = err.headers || { 'Content-Type': 'text/html' };
+            var body = err.message || err.body.error || "Error";
+            app.log.error(body);
+            res.writeHead(status, headers);
+            res.end(body);
         }
     };
 
