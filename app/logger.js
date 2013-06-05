@@ -30,6 +30,10 @@ exports.attach = function() {
     logger.transports.console.colorize = true;
     logger.transports.console.prettyPrint = true;
 
+    if (app.env !== 'development') {
+        logger.remove(winston.transports.Console);
+    }
+
     logger.add(winston.transports.File, {
         level: 'info',
         name: 'file.info',
