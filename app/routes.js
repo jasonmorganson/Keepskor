@@ -40,11 +40,15 @@ exports.attach = function() {
 
     app.http.router.get( '/', function() {
 
-        var username = this.req.user ? this.req.user.username : "Unknown";
+        var req = this.req,
+            res = this.res;
+
+        var headers = req.headers || { 'Content-Type': 'text/html' };
+        var username = req.user ? req.user.username : "Unknown";
         var template = fs.readFileSync( './app/templates/index.html', 'utf-8' );
 
-        this.res.writeHead(200, { 'Content-Type': 'text/html' } );
-        this.res.end( plates.bind( template, { user: username } ) );
+        res.writeHead(200, headers);
+        res.end(plates.bind(template, { user: username } ) );
     });
 
     app.http.router.post( '/login', function() {
