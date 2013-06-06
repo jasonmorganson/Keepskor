@@ -51,5 +51,35 @@
         <form id="forgot" action="#" method="post">
             <input type="submit" value="Forgot password?"/>
         </form>
+        <script>
+
+            function update() {
+
+                var login = document.forms['login'];
+                var register = document.forms['register'];
+                var forgot = document.forms['forgot'];
+
+                register.email.value = login.email.value;
+                register.number.value = login.number.value;
+                register.username.value = login.username.value;
+                register.password.value = login.password.value;
+
+                forgot.action = "/users/" + login.username.value + "/forgot";
+            }
+
+            function attachUpdate() {
+
+                var login = document.forms['login'];
+
+                login.email.onkeyup = update;
+                login.number.onkeyup = update;
+                login.username.onkeyup = update;
+                login.password.onkeyup = update;
+            }
+
+            document.addEventListener("DOMContentLoaded", attachUpdate);
+            document.addEventListener("DOMContentLoaded", update);
+
+        </script>
     </body>
 </html>
