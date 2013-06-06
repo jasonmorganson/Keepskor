@@ -29,10 +29,10 @@ describe('the register route', function(){
         });
     });
 
-    describe('should respond with an error (500)', function() {
+    describe('should respond with an redirect (302)', function() {
         it('when username is missing', function(done) {
             request.post(server + '/register', function(err, res, body) {
-                assert.equal(res.statusCode, 500);
+                assert.equal(res.statusCode, 302);
                 done();
             }).form({
                 email: "test@test.com",
@@ -41,13 +41,16 @@ describe('the register route', function(){
         });
         it('when password is missing', function(done) {
             request.post(server + '/register', function(err, res, body) {
-                assert.equal(res.statusCode, 500);
+                assert.equal(res.statusCode, 302);
                 done();
             }).form({
                 email: "test@test.com",
                 username: "test_user"
             });
         });
+    });
+
+    describe('should respond with an error (500)', function() {
         it('when email is missing', function(done) {
             request.post(server + '/register', function(err, res, body) {
                 assert.equal(res.statusCode, 500);
@@ -59,15 +62,15 @@ describe('the register route', function(){
         });
     });
 
-    describe('should respond with success', function() {
-        it.skip('on a valid request', function(done) {
-            request.post(server + '/register', {
+    describe('should respond with successful redirect', function() {
+        it('on a valid request', function(done) {
+            request.post(server + '/register', function(err, res, body) {
+                assert.equal(res.statusCode, 302);
+                done();
+            }).form({
                 email: "test@test.com",
                 username: "test_user",
                 password: "password"
-            }, function(err, res, body) {
-                assert.equal(res.statusCode, 200);
-                done();
             });
         });
     });
