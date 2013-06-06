@@ -18,6 +18,26 @@ describe('the login route', function(){
         app.start(port);
     });
 
+    describe('should respond with success', function() {
+        it('on a valid request', function(done) {
+            // Register valid user
+            request.post(server + '/register', { form: {
+                email: "test@test.com",
+                username: "test_user",
+                password: "password"
+                }}, function(err, res, body) {
+                assert.equal(res.statusCode, 302);
+                request.post(server + '/login', { form: {
+                    username: "test_user",
+                    password: "password"
+                    }}, function(err, res, body) {
+                    assert.equal(res.statusCode, 302);
+                    done();
+                });
+            });
+        });
+    });
+
     describe('should respond with unauthorized (401)', function() {
         it('when POST is empty', function(done) {
             request.post(server + '/login', {
@@ -42,20 +62,6 @@ describe('the login route', function(){
                 assert.equal(res.statusCode, 401);
                 done();
             });
-        });
-    });
-
-    describe('should respond with success', function() {
-        it.skip('on a valid request', function(done) {
-            /*
-             *request.post(server + '/login', {
-             *    username: "test_user",
-             *    password: "password"
-             *}, function(err, res, body) {
-             *    assert.equal(res.statusCode, 200);
-             *    done();
-             *});
-             */
         });
     });
 
