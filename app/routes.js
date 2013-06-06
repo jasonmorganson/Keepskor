@@ -120,25 +120,27 @@ exports.attach = function() {
             password: req.body.password
         };
 
-        app.log.debug("Request to register a player received", player);
+        app.log.debug("Request to register a player received");
+        app.log.silly(player);
 
         app.resources.User.create(
 
             player, function(err, player) {
 
                 if (err) {
-                    err = errs.merge(err, "Error creating player", player);
+                    err = errs.merge(err, "Error creating player");
                     return onError(err, req, res);
                 }
 
                 player.save(function(err, player) {
 
                     if (err) {
-                        err = errs.merge(err, "Error saving player", player);
+                        err = errs.merge(err, "Error saving player");
                         return onError(err, req, res);
                     }
 
-                    app.log.debug("Player created and saved", player);
+                    app.log.debug("Player created and saved");
+                    app.log.silly(player);
 
                     req.login(player, function(err) {
 
