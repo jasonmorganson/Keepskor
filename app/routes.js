@@ -11,13 +11,28 @@ exports.attach = function() {
 
     app.http.router = app.router;
 
-    app.http.router.before(app.requireAuth);
-
     app.unauthorized = new director.http.Router()
         .configure({
             async: true,
             strict: false
         });
+
+    var ensureAuthentication = function() {
+
+        var self = this,
+            req = this.req,
+            res = this.res;
+
+        function next() {
+            self.res.emit('next');
+        }
+
+        app.log.debug("Ensuring authentication");
+
+        app.passport.authenticate('local')(req, res, next);
+    };
+
+    app.http.router.before(ensureAuthentication);
 
     app.http.router.notfound = function(callback) {
 
@@ -49,7 +64,7 @@ exports.attach = function() {
         }
     };
 
-    app.http.router.get( '/', function() {
+    app.unauthorized.get( '/', function() {
 
         var req = this.req,
             res = this.res;
