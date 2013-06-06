@@ -140,9 +140,17 @@ exports.attach = function() {
 
                     app.log.debug("Player created and saved", player);
 
-                    // TODO: Log player in after registration
+                    req.login(player, function(err) {
 
-                    return res.redirect('/');
+                        if (err) {
+                            err = errs.merge(err, "Error logging in player");
+                            return onError(err, req, res);
+                        }
+
+                        app.log.debug("Player logged in");
+
+                        return res.redirect('/');
+                    });
                 });
             }
         );
