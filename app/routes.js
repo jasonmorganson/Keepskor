@@ -32,13 +32,12 @@ exports.attach = function() {
             req = this.req,
             res = this.res;
 
-        function next() {
-            self.res.emit('next');
-        }
-
         app.log.debug("Ensuring authentication");
 
-        app.passport.authenticate('local')(req, res, next);
+        app.passport.authenticate('local')(req, res, function() {
+            res.emit('next');
+            res.redirect('/');
+        });
     };
 
     app.http.router.before(ensureAuthentication);
@@ -103,6 +102,7 @@ exports.attach = function() {
 
         app.log.debug("Received request to login player", player);
 
+        return res.redirect('/');
     });
 
     app.unauthorized.post( '/register', function() {

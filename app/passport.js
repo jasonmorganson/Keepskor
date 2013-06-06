@@ -33,14 +33,14 @@ exports.attach = function() {
     });
 
     app.passport.serializeUser(function(user, done) {
-        app.log.debug("Serialize", user);
+        app.log.debug("Serialized", user);
         done(null, user.username);
     });
 
     app.passport.deserializeUser(function(username, done) {
-        app.log.debug("Deserialize", username);
         app.resources.User.find({ username: username }, function(err, user) {
-            done(err, user);
+            app.log.debug("Deserialized", user[0]);
+            done(err, user[0]);
         });
     });
 
