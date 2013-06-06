@@ -9,14 +9,14 @@ module.exports = app;
 app.use(require('./config'));
 app.use(require('./logger'));
 app.use(require('./server'));
-app.use(require('./routes'));
-app.use(require('./passport'));
 
 app.use(flatiron.plugins.resourceful, app.config.get('resourceful'));
 
 // HTTP user resources and routes
 app.use(httpUsers);
 
+app.use(require('./passport'));
+app.use(require('./routes'));
 
 app.on('init', function(err) {
 

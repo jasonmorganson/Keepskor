@@ -18,6 +18,14 @@ exports.attach = function() {
             strict: false
         });
 
+    var allowUnauthorizedRoutes = function(req, res) {
+        if (!app.unauthorized.dispatch(req, res)) {
+            res.emit('next');
+        }
+    };
+
+    app.http.before.push(allowUnauthorizedRoutes);
+
     var ensureAuthentication = function() {
 
         var self = this,

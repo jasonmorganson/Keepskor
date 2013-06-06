@@ -22,7 +22,7 @@ exports.attach = function() {
             req.logout = req.logOut = res.req.logout;
             res.emit('next');
         });
-    };
+    });
 
     app.http.before.push( function(req, res) {
 
@@ -30,7 +30,7 @@ exports.attach = function() {
         passport.session()(req, res, function() {
             res.emit('next');
         });
-    };
+    });
 
     app.passport.serializeUser(function(user, done) {
         app.log.debug("Serialize", user);
