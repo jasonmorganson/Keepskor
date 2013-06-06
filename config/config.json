@@ -3,6 +3,13 @@
     "require-activation": false,
     "require-confirmation": false
   },
+  "http-users": {
+    "confirm": false,
+    "keys": true,
+    "search": false,
+    "tokens": true,
+    "third-party": true
+  },
   "resourceful": {
     "dir": "./app/resources",
     "engine": "couchdb",
