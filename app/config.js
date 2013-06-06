@@ -8,8 +8,8 @@ exports.attach = function() {
     app.use(flatiron.plugins.config);
 
     app.config
-        .env()
         .argv()
+        .env('_')
         .file( 'config/config.json' )
         .file( 'env', 'config/' + env + '.json' )
         .defaults({
