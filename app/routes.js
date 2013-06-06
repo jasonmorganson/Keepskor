@@ -8,6 +8,7 @@ exports.attach = function() {
     var app = this;
 
     app.use(require('./server'));
+    app.use(require('./passport'));
 
     app.http.router = app.router;
 
@@ -79,30 +80,61 @@ exports.attach = function() {
 
     app.http.router.post( '/login', function() {
 
-        self = this;
-        req = self.req;
-        res = self.res;
+        var req = this.req,
+            res = this.res;
 
-        function next() { res.emit('next'); }
+        if (!req.body) {
+            return onError(new director.http.BadRequest, req, res);
+        }
 
-        app.passport.authenticate( 'local', function(error, user) {
+        var player = {
+            email:    req.body.email,
+            username: req.body.username,
+            password: req.body.password
+        };
 
-            if (error) { res.end("SERVER ERROR\n") }
-            if (!user) { res.end("false") }
-            else {
+        app.log.debug("Received request to login player", player);
 
-                req.logIn( user, function(error) {
+    });
 
-                    if (error) { throw error }
+    app.unauthorized.post( '/register', function() {
 
-                    res.writeHead( 200, {
-                        'Content-Type': 'text/html',
-                        'Authentication': JSON.stringify(req._passport.session)});
+        var req = this.req,
+            res = this.res;
 
-                    res.end("true");
+        if (!req.body) {
+            return onError(new director.http.BadRequest, req, res);
+        }
+
+        var player = {
+            email:    req.body.email,
+            username: req.body.username,
+            password: req.body.password
+        };
+
+        app.log.debug("Request to register a player received", player);
+
+        app.resources.User.create(
+
+            player, function(err, player) {
+
+                if (err) {
+                    err = errs.merge(err, "Error creating player", player);
+                    return onError(err, req, res);
+                }
+
+                player.save(function(err, player) {
+
+                    if (err) {
+                        err = errs.merge(err, "Error saving player", player);
+                        return onError(err, req, res);
+                    }
+
+                    app.log.debug("Player created and saved", player);
+
+                    return res.redirect('/');
                 });
-
             }
-        })(this.req, this.res, next);
+        );
     });
 };
