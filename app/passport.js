@@ -12,6 +12,26 @@ exports.attach = function() {
     app.passport = passport;
     app.authStrategy = passport;
 
+    app.http.before.push( function(req, res) {
+
+        // Pass flatiron connections to passport
+        passport.initialize()(req, res, function() {
+            req.isAuthenticated = res.req.isAuthenticated;
+            req.isUnauthenticated = res.req.isUnauthenticated;
+            req.login = req.logIn = res.req.login;
+            req.logout = req.logOut = res.req.logout;
+            res.emit('next');
+        });
+    };
+
+    app.http.before.push( function(req, res) {
+
+        // Pass flatiron connections to passport
+        passport.session()(req, res, function() {
+            res.emit('next');
+        });
+    };
+
     app.passport.serializeUser(function(user, done) {
         app.log.debug("Serialize", user);
         done(null, user.username);

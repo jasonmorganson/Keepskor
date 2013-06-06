@@ -17,8 +17,6 @@ exports.attach = function() {
     app.http.before.push(allowUnauthorizedRoutes);
     app.http.before.push(connect.cookieParser('secret'));
     app.http.before.push(connect.session());
-    app.http.before.push(passport.initialize());
-    app.http.before.push(passport.session());
     app.http.before.push(connect.static('public'));
 
 };
