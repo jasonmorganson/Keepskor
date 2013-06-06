@@ -10,6 +10,7 @@ app.use(require('./config'));
 app.use(require('./logger'));
 app.use(require('./server'));
 
+// Load resources
 app.use(flatiron.plugins.resourceful, app.config.get('resourceful'));
 
 // HTTP user resources and routes

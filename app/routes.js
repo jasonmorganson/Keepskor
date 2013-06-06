@@ -140,6 +140,8 @@ exports.attach = function() {
 
                     app.log.debug("Player created and saved", player);
 
+                    // TODO: Log player in after registration
+
                     return res.redirect('/');
                 });
             }
