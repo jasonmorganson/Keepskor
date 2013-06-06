@@ -76,7 +76,7 @@ exports.attach = function() {
     });
 
     process.addListener('uncaughtException', function(err) {
-        console.trace();
+        console.log(err.stack.split(NEW_LINE));
         app.log.error(err.message);
         process.exit(ERROR);
     });
