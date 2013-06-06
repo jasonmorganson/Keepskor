@@ -1,10 +1,10 @@
 var errs = require('errs'),
     flatiron = require('flatiron'),
     httpUsers = require('flatiron-http-users'),
-    resourceful = require('resourceful'),
-    app = flatiron.app;
+    restful = require('restful'),
+    resourceful = require('resourceful');
 
-module.exports = app;
+var app = module.exports = flatiron.app;
 
 app.use(require('./config'));
 app.use(require('./logger'));
@@ -14,6 +14,9 @@ app.use(flatiron.plugins.resourceful, app.config.get('resourceful'));
 
 // HTTP user resources and routes
 app.use(httpUsers);
+
+// Expose all resources as restful routers
+app.use(restful);
 
 app.use(require('./passport'));
 app.use(require('./routes'));
