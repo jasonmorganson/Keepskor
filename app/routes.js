@@ -28,11 +28,12 @@ exports.attach = function() {
 
     var ensureAuthentication = function() {
 
-        var self = this,
-            req = this.req,
+        var req = this.req,
             res = this.res;
 
-        app.log.debug("Ensuring authentication");
+        if (req.isAuthenticated()) {
+            res.emit('next');
+        }
 
         app.passport.authenticate('local')(req, res, function() {
             res.emit('next');
