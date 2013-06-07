@@ -33,15 +33,27 @@ exports.attach = function() {
 
         if (req.isAuthenticated()) {
             res.emit('next');
-        }
 
-        app.passport.authenticate('local')(req, res, function() {
-            res.emit('next');
-            res.redirect('/');
-        });
+        } else if (req.isUnauthenticated()) {
+            doAuthentication();
+        }
     };
 
-    app.http.router.before(ensureAuthentication);
+    //app.http.router.before(ensureAuthentication);
+
+    var doAuthentication = function() {
+
+        var req = this.req,
+            res = this.res;
+
+        if (req.isUnauthenticated()) {
+
+            app.passport.authenticate('local')(req, res, function() {
+                res.emit('next');
+                res.redirect('/');
+            });
+        }
+    };
 
     app.http.router.notfound = function(callback) {
 
@@ -73,7 +85,7 @@ exports.attach = function() {
         }
     };
 
-    app.unauthorized.get( '/', function() {
+    app.http.router.get( '/', function() {
 
         var req = this.req,
             res = this.res;
@@ -96,27 +108,18 @@ exports.attach = function() {
         res.end(body);
     });
 
-    app.http.router.post( '/login', function() {
+    app.http.router.post( '/login', doAuthentication);
+
+    app.http.router.post( '/logout', function() {
 
         var req = this.req,
             res = this.res;
 
-        if (!req.body) {
-            return onError(new director.http.BadRequest, req, res);
-        }
-
-        var player = {
-            email:    req.body.email,
-            username: req.body.username,
-            password: req.body.password
-        };
-
-        app.log.debug("Received request to login player", player);
-
-        return res.redirect('/');
+        req.logout();
+        res.redirect('/');
     });
 
-    app.unauthorized.post( '/register', function() {
+    app.http.router.post( '/register', function() {
 
         var req = this.req,
             res = this.res;

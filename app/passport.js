@@ -17,15 +17,11 @@ exports.attach = function() {
     app.http.before.push(passport.session());
 
     app.passport.serializeUser(function(user, done) {
-        app.log.debug("Serialized");
-        app.log.silly(user);
         done(null, user.username);
     });
 
     app.passport.deserializeUser(function(username, done) {
         app.resources.User.find({ username: username }, function(err, user) {
-            app.log.debug("Deserialized");
-            app.log.silly(user[0]);
             done(err, user[0]);
         });
     });
