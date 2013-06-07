@@ -114,7 +114,22 @@ exports.attach = function() {
         res.end(body);
     });
 
-    app.http.router.post( '/login', doAuthentication);
+    app.http.router.post( '/login', function() {
+
+        var req = this.req,
+            res = this.res;
+
+        if (req.isAuthenticated()) {
+            res.redirect('/');
+        }
+
+        else if (req.isUnauthenticated()) {
+
+            app.passport.authenticate('local')(req, res, function() {
+                res.redirect('/');
+            });
+        }
+    });
 
     app.http.router.post( '/logout', function() {
     // FIXME: It looks like flatiron http-users and passport are
@@ -148,37 +163,34 @@ exports.attach = function() {
         app.log.debug("Request to register a player received");
         app.log.silly(player);
 
-        // TODO: Check for existing user before creating a new one.
+        app.resources.User.available(player.username, function(err, isAvailable) {
 
-        app.resources.User.create(
+            if (err || !isAvailable) {
+                return onError(errs.merge(err || {}, "Username is not available"), req, res);
+            }
 
-            player, function(err, player) {
+            else {
 
-                if (err) {
-                    err = errs.merge(err, "Error creating player");
-                    return onError(err, req, res);
-                }
-
-                player.save(function(err, player) {
+                app.resources.User.create(player, function(err, player) {
 
                     if (err) {
-                        err = errs.merge(err, "Error saving player");
+                        err = errs.merge(err, "Error creating player");
                         return onError(err, req, res);
                     }
 
-                    app.log.debug("Player created and saved");
-                    app.log.silly(player);
-
-                    req.login(player, function(err) {
+                    player.save(function(err, player) {
 
                         if (err) {
-                            err = errs.merge(err, "Error logging in player");
+                            err = errs.merge(err, "Error saving player");
                             return onError(err, req, res);
                         }
 
-                        app.log.debug("Player logged in");
+                        app.log.debug("Player created and saved");
+                        app.log.silly(player);
 
-                        return res.redirect('/');
+                        app.passport.authenticate('local')(req, res, function() {
+                            res.redirect('/');
+                        });
                     });
                 });
             }
