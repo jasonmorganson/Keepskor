@@ -95,6 +95,8 @@ exports.attach = function() {
         var body = fs.readFileSync( './app/templates/header.html', 'utf-8' );
         var loginForm = fs.readFileSync( './app/templates/login.html', 'utf-8' );
         var logoutForm = fs.readFileSync( './app/templates/logout.html', 'utf-8' );
+        // TODO: These are loaded synchronously here so they refresh while
+        // under development, but they should be cached in production.
 
         body = plates.bind(body, { user: username } );
 
@@ -111,6 +113,10 @@ exports.attach = function() {
     app.http.router.post( '/login', doAuthentication);
 
     app.http.router.post( '/logout', function() {
+    // FIXME: It looks like flatiron http-users and passport are
+    // colliding on the user store in the session, which is preventing
+    // the user object from being removed from the session and logging
+    // out the user in passports terms.
 
         var req = this.req,
             res = this.res;
@@ -136,6 +142,8 @@ exports.attach = function() {
 
         app.log.debug("Request to register a player received");
         app.log.silly(player);
+
+        // TODO: Check for existing user before creating a new one.
 
         app.resources.User.create(
 

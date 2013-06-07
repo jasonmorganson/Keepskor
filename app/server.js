@@ -9,7 +9,10 @@ exports.attach = function() {
     app.use(flatiron.plugins.http);
 
     app.http.before.push(connect.cookieParser('secret'));
+
+    // TODO: Connect session memory store is not fit for production.
     app.http.before.push(connect.session());
+
     app.http.before.push(connect.static('public'));
 
 };
