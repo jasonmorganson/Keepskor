@@ -80,10 +80,20 @@ exports.attach = function() {
 
         var headers = req.headers || { 'Content-Type': 'text/html' };
         var username = req.user ? req.user.username : "Unknown";
-        var template = fs.readFileSync( './app/templates/index.html', 'utf-8' );
+        var body = fs.readFileSync( './app/templates/header.html', 'utf-8' );
+        var loginForm = fs.readFileSync( './app/templates/login.html', 'utf-8' );
+        var logoutForm = fs.readFileSync( './app/templates/logout.html', 'utf-8' );
+
+        body = plates.bind(body, { user: username } );
+
+        if (req.isAuthenticated()) {
+            body += logoutForm;
+        } else if (req.isUnauthenticated()) {
+            body += loginForm;
+        }
 
         res.writeHead(200, headers);
-        res.end(plates.bind(template, { user: username } ) );
+        res.end(body);
     });
 
     app.http.router.post( '/login', function() {
