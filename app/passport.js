@@ -34,12 +34,7 @@ exports.attach = function() {
 
             app.log.debug("Authenticate locally with " + username + " and " + password);
 
-            // FIXME: User.get() is what we want here, but it wasn't working.
-            //app.resources.User.get(username, function(err, user){
-            app.resources.User.find({ username: username }, function(err, user){
-
-                // User.find() returns an array, so take first one.
-                user = user ? user[0] : null;
+            app.resources.User.get(username, function(err, user){
 
                 if (!user || err && err.error === 'not_found') {
                     err = errs.merge(err || {}, "Unknown user " + username);
@@ -63,7 +58,7 @@ exports.attach = function() {
                     return done(null, false, err);
                 }
 
-                app.log.debug("Authenticated");
+                app.log.debug("Authenticated locally");
                 return done(null, user);
             });
         }

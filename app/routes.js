@@ -139,6 +139,7 @@ exports.attach = function() {
         }
 
         var player = {
+            id:       req.body.username,
             email:    req.body.email,
             username: req.body.username,
             password: req.body.password
