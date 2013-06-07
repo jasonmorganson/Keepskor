@@ -95,6 +95,7 @@ exports.attach = function() {
         var body = fs.readFileSync( './app/templates/header.html', 'utf-8' );
         var loginForm = fs.readFileSync( './app/templates/login.html', 'utf-8' );
         var logoutForm = fs.readFileSync( './app/templates/logout.html', 'utf-8' );
+        var footer = fs.readFileSync( './app/templates/footer.html', 'utf-8' );
         // TODO: These are loaded synchronously here so they refresh while
         // under development, but they should be cached in production.
 
@@ -105,6 +106,9 @@ exports.attach = function() {
         } else if (req.isUnauthenticated()) {
             body += loginForm;
         }
+
+
+        body += footer;
 
         res.writeHead(200, headers);
         res.end(body);
