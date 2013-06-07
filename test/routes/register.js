@@ -30,6 +30,15 @@ describe('the register route', function(){
     });
 
     describe('should respond with an redirect (302)', function() {
+        it('when username is missing', function(done) {
+            request.post(server + '/register', function(err, res, body) {
+                assert.equal(res.statusCode, 302);
+                done();
+            }).form({
+                email: "test@test.com",
+                password: "1234"
+            });
+        });
         it('when password is missing', function(done) {
             request.post(server + '/register', function(err, res, body) {
                 assert.equal(res.statusCode, 302);
@@ -42,15 +51,6 @@ describe('the register route', function(){
     });
 
     describe('should respond with an error (500)', function() {
-        it('when username is missing', function(done) {
-            request.post(server + '/register', function(err, res, body) {
-                assert.equal(res.statusCode, 500);
-                done();
-            }).form({
-                email: "test@test.com",
-                password: "1234"
-            });
-        });
         it('when email is missing', function(done) {
             request.post(server + '/register', function(err, res, body) {
                 assert.equal(res.statusCode, 500);
