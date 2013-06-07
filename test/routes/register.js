@@ -30,24 +30,6 @@ describe('the register route', function(){
     });
 
     describe('should respond with an redirect (302)', function() {
-        it('when username is missing', function(done) {
-            request.post(server + '/register', function(err, res, body) {
-                assert.equal(res.statusCode, 302);
-                done();
-            }).form({
-                email: "test@test.com",
-                password: "1234"
-            });
-        });
-        it('when password is missing', function(done) {
-            request.post(server + '/register', function(err, res, body) {
-                assert.equal(res.statusCode, 302);
-                done();
-            }).form({
-                email: "test@test.com",
-                username: "test_user"
-            });
-        });
     });
 
     describe('should respond with an error (500)', function() {
@@ -60,16 +42,35 @@ describe('the register route', function(){
                 password: "password"
             });
         });
+        it('when username is missing', function(done) {
+            request.post(server + '/register', function(err, res, body) {
+                assert.equal(res.statusCode, 500);
+                done();
+            }).form({
+                email: "test1@test.com",
+                password: "1234"
+            });
+        });
+        it('when password is missing', function(done) {
+            request.post(server + '/register', function(err, res, body) {
+                assert.equal(res.statusCode, 500);
+                done();
+            }).form({
+                email: "test2@test.com",
+                username: "test_user"
+            });
+        });
     });
 
     describe('should respond with successful redirect', function() {
         it('on a valid request', function(done) {
+            var randomNum = Math.floor(Math.random() * 100) + 1;
             request.post(server + '/register', function(err, res, body) {
                 assert.equal(res.statusCode, 302);
                 done();
             }).form({
-                email: "test@test.com",
-                username: "test_user",
+                email: "test" + randomNum + "@test.com",
+                username: "test" + randomNum,
                 password: "password"
             });
         });

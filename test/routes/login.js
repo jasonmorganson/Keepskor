@@ -21,14 +21,15 @@ describe('the login route', function(){
     describe('should respond with success', function() {
         it('on a valid request', function(done) {
             // Register valid user
+            var randomNum = Math.floor(Math.random() * 100) + 1;
             request.post(server + '/register', { form: {
-                email: "test@test.com",
-                username: "test_user",
+                email: "test" + randomNum + "@test.com",
+                username: "test" + randomNum,
                 password: "password"
                 }}, function(err, res, body) {
                 assert.equal(res.statusCode, 302);
                 request.post(server + '/login', { form: {
-                    username: "test_user",
+                    username: "test" + randomNum,
                     password: "password"
                     }}, function(err, res, body) {
                     assert.equal(res.statusCode, 302);
