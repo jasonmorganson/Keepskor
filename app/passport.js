@@ -1,7 +1,10 @@
 var errs = require('errs'),
     hash = require('node_hash'),
     passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy;
+    LocalStrategy = require('passport-local').Strategy,
+    KeepskorExplicitStrategy = require('./strategies/keepskor-explicit.js').Strategy;
+    KeepskorImplicitStrategy = require('./strategies/keepskor-implicit.js').Strategy;
+    TwitterStrategy = require('passport-twitter').Strategy;
 
 require('../lib/common');
 
@@ -12,9 +15,28 @@ exports.attach = function() {
     app.passport = passport;
     app.authStrategy = passport;
 
-    app.http.before.push(passport.initialize());
+    app.http.before.push(passport.initialize({
+        /* userProperty: 'player' */
+    }));
 
     app.http.before.push(passport.session());
+
+    app.http.before.push(function(req, res) {
+
+        req.isAuthenticatedWithTwitter = function() {
+            if (req && req._passport && req._passport.session) {
+                return req._passport.session.twitter ? true : false;
+            }
+        };
+
+        req.isAuthenticatedWithFacebook = function(req, res) {
+            if (req && req._passport && req._passport.session) {
+                return req._passport.session.facebook ? true : false;
+            }
+        };
+
+        res.emit('next');
+    });
 
     app.passport.serializeUser(function(user, done) {
         done(null, user.username);
@@ -63,4 +85,49 @@ exports.attach = function() {
             });
         }
     ));
+
+    // FIXME: Pull in callback URL dynamically
+    // tried using app.server.addresss, but its not initialized here yet
+    app.passport.use(new TwitterStrategy({
+        consumerKey: app.config.get('twitter:consumerKey'),
+        consumerSecret: app.config.get('twitter:consumerSecret'),
+        callbackURL: app.config.get('twitter:callbackURL'),
+        passReqToCallback: true
+    }, function(req, token, tokenSecret, profile, done) {
+
+        if (req.isAuthenticated()) {
+
+            var options = {};
+            var username = req.user.username;
+            options.token = {
+                id: profile.id,
+                provider: profile.provider,
+                token: token
+            };
+
+            app.resources.User.addThirdPartyToken(username, options, function(err, token) {
+
+                if (err) {
+                    err = errs.merge(err, "There was an error adding Twitter token to user");
+                    app.log.error(err);
+                    return done(err, req.user);
+                }
+            });
+
+            // Persist the twitter authentication in the session.
+            req._passport.session.twitter = profile;
+
+            return done(OK, req.user);
+
+        } else if (req.isUnauthenticated()) {
+            console.log("user has not logged in");
+        }
+
+        // TODO: Create new user if one is not present
+    }));
+
+    passport.use(new KeepskorExplicitStrategy());
+
+    passport.use(new KeepskorImplicitStrategy());
+
 };

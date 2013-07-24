@@ -27,7 +27,7 @@ exports.attach = function() {
     app.http.before.push(allowUnauthorizedRoutes);
 
     var ensureAuthentication = function() {
-
+debugger;
         var req = this.req,
             res = this.res;
 
@@ -35,24 +35,23 @@ exports.attach = function() {
             res.emit('next');
 
         } else if (req.isUnauthenticated()) {
-            doAuthentication();
+            doAuthentication(req, res, function() {
+                res.emit('next');
+            });
         }
     };
 
-    //app.http.router.before(ensureAuthentication);
+    app.http.router.before(ensureAuthentication);
 
-    var doAuthentication = function() {
+    var doAuthentication = function(req, res, callback) {
 
-        var req = this.req,
-            res = this.res;
-
-        if (req.isUnauthenticated()) {
-
-            app.passport.authenticate('local')(req, res, function() {
-                res.emit('next');
-                res.redirect('/');
-            });
-        }
+        app.passport.authenticate(
+            ['keepskor-explicit',
+             'keepskor-implicit',
+             'local']
+        )(req, res, function() {
+            callback();
+        });
     };
 
     app.http.router.notfound = function(callback) {
@@ -94,6 +93,8 @@ exports.attach = function() {
         var username = req.user ? req.user.username : "Unknown";
         var body = fs.readFileSync( './app/templates/header.html', 'utf-8' );
         var loginForm = fs.readFileSync( './app/templates/login.html', 'utf-8' );
+        var twitterForm = fs.readFileSync( './app/templates/twitter.html', 'utf-8' );
+        var facebookForm = fs.readFileSync( './app/templates/facebook.html', 'utf-8' );
         var logoutForm = fs.readFileSync( './app/templates/logout.html', 'utf-8' );
         var footer = fs.readFileSync( './app/templates/footer.html', 'utf-8' );
         // TODO: These are loaded synchronously here so they refresh while
@@ -107,6 +108,13 @@ exports.attach = function() {
             body += loginForm;
         }
 
+        if (!req.isAuthenticatedWithTwitter()) {
+            body += twitterForm;
+        }
+
+        if (!req.isAuthenticatedWithFacebook()) {
+            body += facebookForm;
+        }
 
         body += footer;
 
@@ -125,7 +133,11 @@ exports.attach = function() {
 
         else if (req.isUnauthenticated()) {
 
-            app.passport.authenticate('local')(req, res, function() {
+            app.passport.authenticate(
+                ['keepskor-explicit',
+                 'keepskor-implicit',
+                 'local']
+            )(req, res, function() {
                 res.redirect('/');
             });
         }
@@ -194,6 +206,32 @@ exports.attach = function() {
                     });
                 });
             }
-        );
+        });
+    });
+
+    app.http.router.get( '/twitter-login', function() {
+
+        var req = this.req,
+            res = this.res;
+
+        app.log.debug("Received request to authenticate with Twitter");
+
+        app.passport.authenticate('twitter')(req, res, function() {
+            return res.emit('next');
+        });
+    });
+
+    app.http.router.get( '/twitter-token', function() {
+
+        var req = this.req,
+            res = this.res;
+
+        app.log.debug("Received authentication response from Twitter");
+
+        app.passport.authenticate('twitter')(req, res, function() {
+            app.log.debug("Authenticated with Twitter");
+            res.emit('next');
+            res.redirect('/');
+        });
     });
 };

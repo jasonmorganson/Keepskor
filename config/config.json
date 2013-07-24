@@ -17,6 +17,11 @@
     "host": "localhost",
     "port": 5984
   },
+  "twitter": {
+    "consumerKey": "wv3Uxd0nxUUESb23BP2FOA",
+    "consumerSecret": "XzKAjEpokHrJVFBxy4x8t8eISzRwwwSMyrxfF6Rw6DE",
+    "callbackURL": "http://dev.morganson.net:8080/twitter-token"
+  },
   "papertrail": {
     "host": "logs.papertrailapp.com",
     "port": "26878"

@@ -1,0 +1,16 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>404 Not Found</title>
+</head><body><script type="text/javascript">
+//<![CDATA[
+new Image().src = "/cdn-cgi/ping?cf[location]=404&cf[js]=1";
+//]]>
+</script>
+<noscript>
+<img src="/cdn-cgi/ping?cf[location]=404&amp;cf[js]=0" alt=""/>
+</noscript>
+<h1>Not Found</h1>
+<p>The requested URL /wp-content/uploads/2013/01/defaulticon.jpg was not found on this server.</p>
+<hr>
+<address>Apache/2.2.22 Server at keepskor.com Port 80</address>
+</body></html>

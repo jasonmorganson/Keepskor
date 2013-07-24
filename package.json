@@ -1,7 +1,7 @@
 {
 
   "name": "Keepskor",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Keepskor",
   "author": "Jason Morganson <jason@morganson.me> (http://jason.morganson.me)",
   "subdomain": "keepskor",
@@ -26,9 +26,11 @@
     "flatiron": "0.3.5",
     "flatiron-http-users": "latest",
     "plates": "0.4.x",
-    "resourceful": "0.3.3",
-    "passport": "git://github.com/jaredhanson/passport.git#flatiron",
-    "passport-local": "*",
+    "resourceful": "0.3.x",
+    "flatiron-passport": "git://github.com/jaredhanson/passport.git#flatiron",
+    "passport": "*",
+    "passport-local": "0.1.6",
+    "passport-twitter": "0.1.4",
     "winston": "0.7.x",
     "winston-papertrail": "0.1.x",
     "exceptional-node": "0.1.x",
